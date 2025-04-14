@@ -29,10 +29,10 @@ public class PROG5121POE {
             String inputUsername = scanner.nextLine();
 
             if (validator.validateUsername(inputUsername)) {
-                System.out.println("Username is valid.");
+                System.out.println("Username successfully captured.");
                 break;
             } else {
-                System.out.println("Username is invalid. Must be at least 5 characters and contain '_'.");
+                System.out.println("Username incorrectly formatted. Must be at least 5 characters and contain '_'.");
             }
         }
 
@@ -42,10 +42,10 @@ public class PROG5121POE {
             String inputPassword = scanner.nextLine();
 
             if (validator.validatePassword(inputPassword)) {
-                System.out.println("Password is valid.");
+                System.out.println("Password successfully captured.");
                 break;
             } else {
-                System.out.println("Password is invalid. Must be at least 8 characters, contain an uppercase letter, digit, and special character.");
+                System.out.println("Password is incorrectly formatted. Must be at least 8 characters, contain an uppercase letter, digit, and special character.");
             }
         }
 
@@ -55,10 +55,10 @@ public class PROG5121POE {
             String inputPhone = scanner.nextLine();
 
             if (validator.validatePhoneNumber(inputPhone)) {
-                System.out.println("Your South African phone number with country code: " + validator.getFormattedPhoneNumber());
+                System.out.println("Your cellphone number successfully added with country code: " + validator.getFormattedPhoneNumber());
                 break;
             } else {
-                System.out.println("Invalid phone number. Must be exactly 10 digits.");
+                System.out.println("Phone number incorrectly formatted. Must be exactly 10 digits.");
             }
         }
 
@@ -73,7 +73,7 @@ public class PROG5121POE {
             String loginPass = scanner.nextLine();
 
             if (validator.login(loginUser, loginPass)) {
-                System.out.println("Welcome " + validator.getFullName() + ", we are happy to see you joined us.");
+                System.out.println("Welcome " + validator.getFullName() + ", its great to see you again.");
                 break;
             } else if (!validator.isUsernameCorrect(loginUser) && validator.isPasswordCorrect(loginPass)) {
                 System.out.println("Username incorrect, try again.");
