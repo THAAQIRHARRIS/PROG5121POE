@@ -26,17 +26,26 @@ public class MessageLogic {
 
     public List<String> collectMessages(int count) {
         List<String> messages = new ArrayList<>();
-        int i = 1;
-        while (i <= count) {
-            String msg = JOptionPane.showInputDialog("Enter message #" + i + ":");
-            if (msg == null) {
-                messages.add("[Message cancelled]");
+    int i = 1;
+    while (i <= count) {
+        String msg = JOptionPane.showInputDialog("Enter message #" + i + " (max 250 chars):");
+
+        if (msg == null) {
+            messages.add("[Message cancelled]");
+        } else {
+            msg = msg.trim();
+            if (msg.isEmpty()) {
+                messages.add("[Empty message]");
+            } else if (msg.length() > 250) {
+                JOptionPane.showMessageDialog(null, "Message too long! Limit is 250 characters.");
+                continue; 
             } else {
-                messages.add(msg.trim().isEmpty() ? "[Empty message]" : msg.trim());
+                messages.add(msg);
             }
-            i++;
         }
-        return messages;
+        i++;
+    }
+    return messages;
     }
 
     public String formatMessages(List<String> messages) {
@@ -48,7 +57,12 @@ public class MessageLogic {
     }
 
     public String checkMessageID() {
-        return UUID.randomUUID().toString();
+        
+    Random rand = new Random();
+    int min = 1000000000; 
+    int max = 1999999999; 
+    return String.valueOf(rand.nextInt(max - min + 1) + min);
+
     }
 
     public boolean checkRecipientCell(String cell) {
@@ -83,19 +97,16 @@ public class MessageLogic {
     }
 
     public void storeMessage(String msg) {
-       
-        if (msg == null || msg.equals("[Message cancelled]")) {
-            System.out.println("Message cancelled or null. Not storing.");
-            return;
-        }
-        if (msg.equals("[Empty message]")) {
-            JOptionPane.showMessageDialog(null, "Warning: You entered an empty message.");
-        }
-        
-        sendMessage(msg);      
-        storedMessages.add(msg);       
-        saveMessagesToJson();
+    storedMessages.add(msg);
+    
+    // Automatically save to messages.json every time a new message is stored
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    try (FileWriter writer = new FileWriter("messages.json")) {
+        gson.toJson(storedMessages, writer);
+    } catch (IOException e) {
+        System.err.println("Failed to save messages to JSON: " + e.getMessage());
     }
+}
 
     public int returnTotalMessages() {
         return storedMessages.size();

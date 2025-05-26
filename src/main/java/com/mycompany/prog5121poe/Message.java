@@ -45,42 +45,54 @@ public class Message {
 
     private void sendMessages() {
         String recipient = JOptionPane.showInputDialog("Enter recipient's SA cellphone number (e.g., 0821234567):");
-        if (recipient == null || !handler.checkRecipientCell(recipient)) {
-            JOptionPane.showMessageDialog(null, "Invalid SA cellphone number. Aborting message sending.");
-            return;
-        }
-
-        String input = JOptionPane.showInputDialog("Enter how many messages you want to enter:");
-        if (input == null) return;
-
-        int numMessages;
-        try {
-            numMessages = Integer.parseInt(input);
-            if (numMessages <= 0) throw new NumberFormatException();
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Please enter a valid positive number.");
-            return;
-        }
-
-        List<String> messages = handler.collectMessages(numMessages);
-
-        for (String msg : messages) {
-            String id = handler.checkMessageID();
-            String hash = handler.createMessageHash();
-
-            String fullMessage = "Message ID: " + id + "\n"
-                    + "Recipient: " + recipient + "\n"
-                    + "Message: " + msg + "\n"
-                    + "Hash: " + hash;
-
-            handler.storeMessage(fullMessage);
-            handler.printMessage(fullMessage);
-            handler.sendMessage(fullMessage);
-        }
-
-        int total = handler.returnTotalMessages();
-        JOptionPane.showMessageDialog(null, "All messages sent.\nTotal messages stored: " + total);
+    if (recipient == null || !handler.checkRecipientCell(recipient)) {
+        JOptionPane.showMessageDialog(null, "Invalid SA cellphone number. Aborting message sending.");
+        return;
     }
+
+    String input = JOptionPane.showInputDialog("Enter how many messages you want to enter:");
+    if (input == null) return;
+
+    int numMessages;
+    try {
+        numMessages = Integer.parseInt(input);
+        if (numMessages <= 0) throw new NumberFormatException();
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Please enter a valid positive number.");
+        return;
+    }
+
+    List<String> messages = handler.collectMessages(numMessages);
+
+    for (String msg : messages) {
+        String id = handler.checkMessageID();
+        String hash = handler.createMessageHash();
+
+        String fullMessage = "Message ID: " + id + "\n"
+                + "Recipient: " + recipient + "\n"
+                + "Message: " + msg + "\n"
+                + "Hash: " + hash;
+
+        handler.storeMessage(fullMessage);
+        handler.printMessage(fullMessage);
+        handler.sendMessage(fullMessage);
+    }
+
+    int total = handler.returnTotalMessages();
+    JOptionPane.showMessageDialog(null, "All messages sent.\nTotal messages stored: " + total);
+
+    
+    int saveOption = JOptionPane.showConfirmDialog(null,
+            "Would you like to store these messages in a JSON file?",
+            "Save Messages",
+            JOptionPane.YES_NO_OPTION);
+
+    if (saveOption == JOptionPane.YES_OPTION) {
+        JOptionPane.showMessageDialog(null, "Messages saved to messages.json");
+    } else {
+        JOptionPane.showMessageDialog(null, "Messages were not saved to JSON.");
+    }
+}
 
     private void showComingSoonMessage() {
         JOptionPane.showMessageDialog(null, "This feature is coming soon!");

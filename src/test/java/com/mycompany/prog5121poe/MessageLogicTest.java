@@ -20,14 +20,15 @@ public class MessageLogicTest {
     }
 
     @Test
-    public void testCheckMessageID_UniqueAndValidLength() {
+    public void testCheckMessageID_UniqueAndTenDigits() {
         String id1 = logic.checkMessageID();
         String id2 = logic.checkMessageID();
 
         assertNotNull("Message ID should not be null", id1);
         assertNotNull("Message ID should not be null", id2);
         assertNotEquals("Message IDs should be unique", id1, id2);
-        assertTrue("Message ID should be longer than 10 digits", id1.length() > 10);
+        assertEquals("Message ID should be exactly 10 digits", 10, id1.length());
+        assertTrue("Message ID should be numeric", id1.matches("\\d{10}"));
     }
 
     @Test
@@ -48,6 +49,7 @@ public class MessageLogicTest {
         String hash = logic.createMessageHash();
         assertNotNull("Hash should not be null", hash);
         assertEquals("Hash should be 64 characters long", 64, hash.length());
+        assertTrue("Hash should be hexadecimal", hash.matches("[0-9a-fA-F]{64}"));
     }
 
     @Test
@@ -72,12 +74,13 @@ public class MessageLogicTest {
     @Test
     public void testPrintMessage_NoException() {
         logic.printMessage("This is a test message to print");
-        // No assertion needed unless we redirect output
+        // Output printed to console; no assertion required
     }
 
     @Test
     public void testSendMessage_NoException() {
         logic.sendMessage("This is a test message to send");
-        // No assertion needed since it's a GUI dialog
+        // GUI dialog displayed; no assertion required
     }
 }
+
