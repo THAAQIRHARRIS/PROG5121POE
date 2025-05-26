@@ -14,6 +14,8 @@ public class PROG5121POE {
     public static void main(String[] args) {
          Scanner scanner = new Scanner(System.in);
         Login validator = new Login();
+         Message msg = new Message();
+         msg.showDialog(); 
 
         System.out.println("------------------ REGISTRATION INFO -----------------------");
         System.out.println("please enter the following infomation to create an account: ");
